@@ -1,0 +1,88 @@
+html {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+#drum-machine {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 196, 0);
+    border: 2px solid black;
+    height: 300px;
+    width: 600px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.switch{
+    position: relative;
+    display: inline-block;
+    width: 62px !important; 
+    height: 36px !important;
+    margin-bottom: 30px;
+}
+
+.toggleButton {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border: 1px solid black;
+  }
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #000000;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.power-label {
+    width: 95px !important;
+    font-size: 20px;
+    font-weight: bolder;
+    -webkit-user-select: none;
+    user-select: none;
+    margin:3px 70px;
+}
+

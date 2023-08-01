@@ -1,0 +1,41 @@
+.colButton {
+    height: 300px;  
+}
+
+.drumButton {
+    height: 70px;
+    width: 70px;
+    border: 2px solid black;
+    box-shadow: 3px 3px 5px black;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%) !important;
+    font-size: 20px !important;
+    color: black !important;
+    margin-left: 5px;
+}
+
+.right {
+    width: 100%;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    height: 100%;
+}
+
+.displayScreen{
+    margin-left: 20%;
+    margin-right: 20%;
+    background-color: #ccc;
+    height: 35px;
+    width: 140px !important;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.displayScreen p {
+    width: 100%;
+    height: 100%;
+}
+
+.volume-slider {
+    width: 180px;
+    cursor: pointer;
+}

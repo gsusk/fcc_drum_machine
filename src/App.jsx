@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import { ToggleButton } from 'react-bootstrap';
 
 
 const songs = [
@@ -17,29 +16,46 @@ const songs = [
   { shortcut: 'C', song: 'Closed-HH', linkTo: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3' }
 ];
 
+
 const App = () => {
   const [buttonSong, setButtonSong] = useState(songs);
   const [toggleApp, setToggleApp] = useState(false);
+  const [pressedKey, setPressedKey] = useState('');
+  const [audioVolume, setAudioVolume] = useState(50);
+
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      playSound(e.key.toUpperCase())
+    })
+  }, []) 
 
   const handleClick = () => {
     setToggleApp((currentValue) => {
-      return !currentValue
+      return !currentValue;
     })
   }
+
+  function playSound(selector, i) {
+      const audio = document.getElementById(selector);
+      audio.volume = audioVolume / 100;
+      audio.play();
+      setPressedKey(i);
+  }
+
 
   return (
     <>
    <section id='drum-machine'>
       <Row>
         <Col xs='6' className='colButton d-flex align-items-center'>
-          <DrumButton buttonSong={buttonSong}></DrumButton>
+          <DrumButton itsOn={toggleApp} buttonPlay={(e, i) => playSound(e, i)} buttonSong={buttonSong} onKeyDown></DrumButton>
         </Col>
 
         <Col xs='6' className='colButton '>
           <Row className='right d-flex justify-content-center align-items-center text-center'>
             <Power onClick={handleClick}></Power>
-            <Display></Display>
-            <Volume></Volume>
+            <Display toDisplay={pressedKey} itsOn={toggleApp}></Display>
+            <Volume vol={audioVolume} onVolumeChange={(newVol) =>{ setAudioVolume(newVol)}}></Volume>
           </Row>
         </Col>
 
@@ -50,14 +66,16 @@ const App = () => {
 }
 
 
-const DrumButton = ({buttonSong}) => {
+const DrumButton = ({buttonSong, buttonPlay, itsOn}) => {
   return (
     <>
       <Row className='left d-flex justify-content-center align-items-center '>
       {buttonSong.map((item, index) => {
         return (
         <Col xs='4' key={item.song} className='d-flex justify-content-center align-items-center '>
-          <Button className='drum-pad drumButton mt-2 mb-2'>{item.shortcut}</Button>
+          <Button onClick={itsOn ? () => buttonPlay(item.shortcut, item.song) : null} className='drum-pad drumButton mt-2 mb-2'>{item.shortcut}
+          <audio className='clip' id={item.shortcut} src={item.linkTo}></audio>
+          </Button>
         </Col>)
       })}
       </Row>
@@ -78,20 +96,20 @@ const Power = ({onClick}) => {
   )
 }
 
-const Display = () => {
+const Display = ({itsOn, toDisplay}) => {
   return (
     <>
       <div className='displayScreen'>
-        <p>hey whats up</p>
+        {itsOn && <p>{toDisplay}</p>}
       </div>
     </>
   )
 }
 
-const Volume = () => {
+const Volume = ({onVolumeChange, vol}) => {
   return (
     <div>
-      <input type='range' min="1" max="100" className="volume-slider" onChange={'temp'}></input>    
+      <input onChange={(e) => onVolumeChange(e.target.value)} value={vol} type='range' min="1" max="100" className="volume-slider"></input>    
     </div>
   )
 }
